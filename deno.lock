@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@standard-schema/spec@1": "1.0.0",
+    "jsr:@standard-schema/utils@0.3": "0.3.0",
+    "npm:zod@*": "3.25.61"
+  },
+  "jsr": {
+    "@standard-schema/spec@1.0.0": {
+      "integrity": "4f20bbcf34e92b92f8c01589b958abc7c87385fa9a96170cecdc643d4d5737c0"
+    },
+    "@standard-schema/utils@0.3.0": {
+      "integrity": "f62e134baac4f1d074059c78a5d68974ed19d1ce42cbcb96edb4c11c39ccd1cf"
+    }
+  },
+  "npm": {
+    "zod@3.25.61": {
+      "integrity": "sha512-fzfJgUw78LTNnHujj9re1Ov/JJQkRZZGDMcYqSx7Hp4rPOkKywaFHq0S6GoHeXs0wGNE/sIOutkXgnwzrVOGCQ=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@standard-schema/spec@1",
+      "jsr:@standard-schema/utils@0.3"
+    ]
+  }
+}

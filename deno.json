@@ -1,0 +1,10 @@
+{
+  "name": "@ruintd/standard-utils",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./main.ts",
+  "imports": {
+    "@standard-schema/spec": "jsr:@standard-schema/spec@^1.0.0",
+    "@standard-schema/utils": "jsr:@standard-schema/utils@^0.3.0"
+  }
+}

@@ -1,5 +1,5 @@
 import { z } from "npm:zod/v4";
-import { formatError, validate, wrap, wrapSync } from "./main.ts";
+import { formatError, wrapSync } from "./main.ts";
 
 const schema = wrapSync(
   z.strictObject({
@@ -19,5 +19,5 @@ const data = {
 
 // console.log();
 
-const test2 = schema.validate(data);
+const test2 = schema.safeParse(data);
 if (test2.issues) console.log(formatError(test2.issues));

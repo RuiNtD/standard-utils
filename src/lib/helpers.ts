@@ -15,7 +15,7 @@ export function formatError(
     | Schema.Issue
     | Schema.FailureResult
     | SchemaError
-) {
+): string {
   // Resolves issues from both FailureResult and SchemaError
   if ("issues" in arg) arg = arg.issues;
   if (!(arg instanceof Array)) arg = [arg];

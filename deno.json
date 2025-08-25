@@ -1,13 +1,17 @@
 {
   "name": "@ruintd/standard-utils",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
-  "exports": "./main.ts",
+  "exports": {
+    ".": "./src/async.ts",
+    "./async": "./src/async.ts",
+    "./sync": "./src/sync.ts"
+  },
   "imports": {
     "@standard-schema/spec": "jsr:@standard-schema/spec@^1.0.0",
     "@standard-schema/utils": "npm:@standard-schema/utils@^0.3.0"
   },
   "publish": {
-    "exclude": ["test.ts"]
+    "exclude": ["src/test.ts"]
   }
 }

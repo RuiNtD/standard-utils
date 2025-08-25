@@ -2,20 +2,20 @@
   "version": "5",
   "specifiers": {
     "jsr:@standard-schema/spec@1": "1.0.0",
-    "npm:@standard-schema/utils@0.3": "0.3.0",
-    "npm:zod@*": "3.25.61"
+    "jsr:@zod/zod@*": "4.1.1",
+    "npm:@standard-schema/utils@0.3": "0.3.0"
   },
   "jsr": {
     "@standard-schema/spec@1.0.0": {
       "integrity": "4f20bbcf34e92b92f8c01589b958abc7c87385fa9a96170cecdc643d4d5737c0"
+    },
+    "@zod/zod@4.1.1": {
+      "integrity": "496b9fb0d53d15129c07530a07ae6c0c042147e717e98e29a9048154c1134776"
     }
   },
   "npm": {
     "@standard-schema/utils@0.3.0": {
       "integrity": "sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g=="
-    },
-    "zod@3.25.61": {
-      "integrity": "sha512-fzfJgUw78LTNnHujj9re1Ov/JJQkRZZGDMcYqSx7Hp4rPOkKywaFHq0S6GoHeXs0wGNE/sIOutkXgnwzrVOGCQ=="
     }
   },
   "workspace": {

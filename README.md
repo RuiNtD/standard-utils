@@ -30,14 +30,14 @@ await ss.decode(Player, badData);
 // Argument of type '...' is not assignable to parameter of type '...'.
 
 await ss.validate(Player, data);
-// { value: { username: "billie", xp: 100 } }
+// { success: true, value: { username: "billie", xp: 100 } }
 await ss.safeParse(Player, badData); // alias of "validate"
-// { issues: [ ... ] }
+// { success: false, issues: [ ... ] }
 ```
 
 ## Handling Errors
 
-For error handling, we export a `formatError` function;
+For error handling, we export a `prettifyError` function;
 which can take a `FailureResult` (from validate),
 `Issue[]` (from `FailureResult.issues`), a single `Issue`, or a `SchemaError`;
 and returns a user-friendly error message, similar to Zod's `prettifyError`:
@@ -47,7 +47,7 @@ try {
   await ss.parse(Player, badData);
 } catch (e) {
   if (e instanceof ss.SchemaError) {
-    console.log(ss.formatError(e));
+    console.log(ss.prettifyError(e));
     /*
       ✖ Invalid input: expected string, received number
         → at username
@@ -63,6 +63,7 @@ Or `validate` will return an object containing an `issues` array:
 ```ts
 await ss.validate(Player, badData);
 /* {
+  success: false,
   issues: [
     {
       expected: "string",
@@ -83,21 +84,19 @@ await ss.validate(Player, badData);
 ## Type Guarding
 
 Since TypeScript doesn't allow type guarding with async functions[^1],
-the syntax is different for Async.
-The functions are also named the same on both exports.
+type guarding is only available for sync schemas.
 
 [^1]: https://github.com/microsoft/typescript/issues/37681
 
 ```ts
-// For sync Schemas:
+data; // unknown
 if (ssSync.is(Player, data)) {
+  data; // Player
 }
-ssSync.assert(Player, data);
 
-// For async Schemas:
-if ((await ss.is(Player, data))(data)) {
-}
-(await ss.assert(Player, data))(data);
+data; // unknown
+ssSync.assert(Player, data);
+data; // Player
 ```
 
 ## Wrapping Schemas
@@ -115,7 +114,7 @@ schema.assert(data);
 
 ## Extra Exports
 
-We also export [SchemaStandardV1] as `Schema`, as well as
+We also export [SchemaStandardV1], as well as
 [getDotPath] and [SchemaError] from [@standard-schema/utils].
 
 [Standard Schema]: https://standardschema.dev/

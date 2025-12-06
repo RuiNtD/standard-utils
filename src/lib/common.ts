@@ -5,12 +5,12 @@ import { SchemaError, getDotPath } from "@standard-schema/utils";
 export { SchemaError, getDotPath };
 
 export type Result<Output> = SuccessResult<Output> | FailureResult;
-export type SuccessResult<Output> = S.SuccessResult<Output> & {
+export interface SuccessResult<Output> extends S.SuccessResult<Output> {
   readonly success: true;
-};
-export type FailureResult = S.FailureResult & {
+}
+export interface FailureResult extends S.FailureResult {
   readonly success: false;
-};
+}
 
 export function convertResult<Output>(
   result: S.Result<Output>,

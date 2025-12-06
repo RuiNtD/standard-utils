@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-import-prefix
+
 import { z } from "jsr:@zod/zod@^4.1.1";
 import * as ss from "./async.ts";
 import * as ssS from "./sync.ts";
@@ -6,7 +8,7 @@ const schema = ss.wrap(
   z.strictObject({
     username: z.string(),
     favoriteNumbers: z.array(z.number()),
-  })
+  }),
 );
 
 const data = {
@@ -21,13 +23,9 @@ const data = {
 // console.log();
 
 const test2 = await schema.safeParse(data);
-if (test2.issues) console.log(ss.formatError(test2.issues));
+if (test2.issues) console.log(ss.prettifyError(test2.issues));
 
 await schema.validate(data);
 if (ssS.is(schema.schema, data)) {
-  data;
-}
-
-if ((await ss.is(schema.schema, data))(data)) {
   data;
 }

@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@standard-schema/spec@1": "1.0.0",
     "jsr:@zod/zod@*": "4.1.1",
+    "jsr:@zod/zod@^4.1.1": "4.1.1",
     "npm:@standard-schema/utils@0.3": "0.3.0"
   },
   "jsr": {

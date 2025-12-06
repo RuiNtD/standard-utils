@@ -1,66 +1,53 @@
-import { type Schema, SchemaError } from "./helpers.ts";
+import {
+  type StandardSchemaV1 as S,
+  SchemaError,
+  type Result,
+  convertResult,
+} from "./common.ts";
 
-export async function validate<T extends Schema>(
+export async function validate<T extends S>(
   schema: T,
-  input: unknown
-): Promise<Schema.Result<Schema.InferOutput<T>>> {
+  input: unknown,
+): Promise<Result<S.InferOutput<T>>> {
   let result = schema["~standard"].validate(input);
   if (result instanceof Promise) result = await result;
-  return result;
+  return convertResult(result);
 }
-export const safeParse = validate;
 
-export async function parse<T extends Schema>(
+export async function parse<T extends S>(
   schema: T,
-  input: unknown
-): Promise<Schema.InferOutput<T>> {
+  input: unknown,
+): Promise<S.InferOutput<T>> {
   const result = await validate(schema, input);
   if (result.issues) throw new SchemaError(result.issues);
   return result.value;
 }
+export const safeParse = validate;
 
-export const decode = async <T extends Schema>(
+export const decode = async <T extends S>(
   schema: T,
-  input: Schema.InferInput<T>
-): Promise<Schema.InferOutput<T>> => await parse(schema, input);
-
-export async function is<T extends Schema>(
+  input: S.InferInput<T>,
+): Promise<S.InferOutput<T>> => await parse(schema, input);
+export const safeDecode = async <T extends S>(
   schema: T,
-  input: unknown
-): Promise<(_: unknown) => _ is Schema.InferOutput<T>> {
-  const success = !(await validate(schema, input)).issues;
-  return (_: unknown): _ is Schema.InferOutput<T> => success;
-}
+  input: S.InferInput<T>,
+): Promise<Result<S.InferOutput<T>>> => await safeParse(schema, input);
 
-export async function assert<T extends Schema>(
-  schema: T,
-  input: unknown
-): Promise<(_: unknown) => asserts _ is Schema.InferOutput<T>> {
-  const { issues } = await validate(schema, input);
-  return (_: unknown): asserts _ is Schema.InferOutput<T> => {
-    if (issues) throw new SchemaError(issues);
-  };
-}
-
-export class WrappedAsyncSchema<T extends Schema> {
+export class WrappedAsyncSchema<T extends S> {
   constructor(public readonly schema: T) {}
 
-  validate = (input: unknown): Promise<Schema.Result<Schema.InferOutput<T>>> =>
+  validate = (input: unknown): Promise<Result<S.InferOutput<T>>> =>
     validate(this.schema, input);
+
+  parse = (input: unknown): Promise<S.InferOutput<T>> =>
+    parse(this.schema, input);
   safeParse = this.validate;
 
-  parse = (input: unknown): Promise<Schema.InferOutput<T>> =>
-    parse(this.schema, input);
-  decode = (input: Schema.InferInput<T>): Promise<Schema.InferOutput<T>> =>
+  decode = (input: S.InferInput<T>): Promise<S.InferOutput<T>> =>
     decode(this.schema, input);
-
-  is = (input: unknown): Promise<(_: unknown) => _ is Schema.InferOutput<T>> =>
-    is(this.schema, input);
-  assert = (
-    input: unknown
-  ): Promise<(_: unknown) => asserts _ is Schema.InferOutput<T>> =>
-    assert(this.schema, input);
+  safeDecode = (input: S.InferInput<T>): Promise<Result<S.InferOutput<T>>> =>
+    safeDecode(this.schema, input);
 }
 
-export const wrap = <T extends Schema>(schema: T): WrappedAsyncSchema<T> =>
+export const wrap = <T extends S>(schema: T): WrappedAsyncSchema<T> =>
   new WrappedAsyncSchema(schema);

@@ -1,28 +1,23 @@
-export {
-  type Schema,
-  SchemaError,
-  getDotPath,
-  formatError,
-} from "./lib/helpers.ts";
+export * from "./lib/common.ts";
 
 export {
   validate,
-  safeParse,
   parse,
+  safeParse,
   decode,
+  safeDecode,
   wrap,
-  is,
-  assert,
   WrappedAsyncSchema,
 } from "./lib/async.ts";
 
 export {
   validate as validateSync,
-  safeParse as safeParseSync,
   parse as parseSync,
+  safeParse as safeParseSync,
   decode as decodeSync,
-  wrap as wrapSync,
+  safeDecode as safeDecodeSync,
   is as isSync,
   assert as assertSync,
+  wrap as wrapSync,
   WrappedSyncSchema,
 } from "./lib/sync.ts";

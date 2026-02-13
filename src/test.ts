@@ -11,6 +11,9 @@ const schema = ss.wrap(
   }),
 );
 
+type input = ss.InferInput<typeof schema>;
+type output = ss.InferOutput<typeof schema>;
+
 const data = {
   username: 1234,
   favoriteNumbers: [1234, "4567"],

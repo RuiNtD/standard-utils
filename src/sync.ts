@@ -1,4 +1,4 @@
-export * from "./lib/common.ts";
+export * from "./common.ts";
 
 export {
   validate,

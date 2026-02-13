@@ -5,7 +5,8 @@
   "exports": {
     ".": "./src/async.ts",
     "./async": "./src/async.ts",
-    "./sync": "./src/sync.ts"
+    "./sync": "./src/sync.ts",
+    "./common": "./src/common.ts"
   },
   "imports": {
     "@standard-schema/spec": "jsr:@standard-schema/spec@^1.1.0",

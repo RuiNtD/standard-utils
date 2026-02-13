@@ -1,14 +1,14 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@standard-schema/spec@1": "1.0.0",
+    "jsr:@standard-schema/spec@^1.1.0": "1.1.0",
     "jsr:@zod/zod@*": "4.1.1",
     "jsr:@zod/zod@^4.1.1": "4.1.1",
     "npm:@standard-schema/utils@0.3": "0.3.0"
   },
   "jsr": {
-    "@standard-schema/spec@1.0.0": {
-      "integrity": "4f20bbcf34e92b92f8c01589b958abc7c87385fa9a96170cecdc643d4d5737c0"
+    "@standard-schema/spec@1.1.0": {
+      "integrity": "2ccd54513cd9c960bd155ab569b1a901bc99c6f9ad29559d3f38a28c91c1822d"
     },
     "@zod/zod@4.1.1": {
       "integrity": "496b9fb0d53d15129c07530a07ae6c0c042147e717e98e29a9048154c1134776"
@@ -21,7 +21,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@standard-schema/spec@1",
+      "jsr:@standard-schema/spec@^1.1.0",
       "npm:@standard-schema/utils@0.3"
     ]
   }

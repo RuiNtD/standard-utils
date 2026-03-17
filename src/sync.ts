@@ -1,3 +1,9 @@
+/**
+ * This module provides utilities for working with Standard Schemas synchronously.
+ * It also exports asynchronous versions of the utilities with an `Async` suffix.
+ * @module
+ */
+
 export * from "./common.ts";
 
 export {

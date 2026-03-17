@@ -1,66 +1,101 @@
 import {
-  type StandardSchemaV1 as S,
+  type StandardSchemaV1,
   SchemaError,
   type Result,
   convertResult,
 } from "./common.ts";
 
-export async function validate<T extends S>(
+/** Asynchronously validates the input against the schema.
+ * @returns The output of the schema.
+ * @throws {SchemaError} if validation fails.
+ */
+export async function parse<T extends StandardSchemaV1>(
   schema: T,
   input: unknown,
-  options?: S.Options | undefined,
-): Promise<Result<S.InferOutput<T>>> {
+  options?: StandardSchemaV1.Options | undefined,
+): Promise<StandardSchemaV1.InferOutput<T>> {
+  const result = await safeParse(schema, input, options);
+  if (result.issues) throw new SchemaError(result.issues);
+  return result.value;
+}
+/** Asynchronously validates the input against the schema.
+ * @returns The result of the validation.
+ */
+export async function safeParse<T extends StandardSchemaV1>(
+  schema: T,
+  input: unknown,
+  options?: StandardSchemaV1.Options | undefined,
+): Promise<Result<StandardSchemaV1.InferOutput<T>>> {
   let result = schema["~standard"].validate(input, options);
   if (result instanceof Promise) result = await result;
   return convertResult(result);
 }
+export { safeParse as validate };
 
-export async function parse<T extends S>(
+/** Asynchronously validates the input against the schema.
+ * @param input Unlike {@link parse}, this is strongly-typed to match the schema's input type.
+ * @returns The output of the schema.
+ * @throws {SchemaError} if validation fails.
+ */
+export async function decode<T extends StandardSchemaV1>(
   schema: T,
-  input: unknown,
-  options?: S.Options | undefined,
-): Promise<S.InferOutput<T>> {
-  const result = await validate(schema, input, options);
-  if (result.issues) throw new SchemaError(result.issues);
-  return result.value;
+  input: StandardSchemaV1.InferInput<T>,
+  options?: StandardSchemaV1.Options | undefined,
+): Promise<StandardSchemaV1.InferOutput<T>> {
+  return await parse(schema, input, options);
 }
-export const safeParse = validate;
-
-export const decode = async <T extends S>(
+/** Asynchronously validates the input against the schema.
+ * @param input Unlike {@link validate}, this is strongly-typed to match the schema's input type.
+ * @returns The result of the validation.
+ */
+export async function safeDecode<T extends StandardSchemaV1>(
   schema: T,
-  input: S.InferInput<T>,
-  options?: S.Options | undefined,
-): Promise<S.InferOutput<T>> => await parse(schema, input, options);
-export const safeDecode = async <T extends S>(
-  schema: T,
-  input: S.InferInput<T>,
-  options?: S.Options | undefined,
-): Promise<Result<S.InferOutput<T>>> => await safeParse(schema, input, options);
+  input: StandardSchemaV1.InferInput<T>,
+  options?: StandardSchemaV1.Options | undefined,
+): Promise<Result<StandardSchemaV1.InferOutput<T>>> {
+  return await safeParse(schema, input, options);
+}
 
-export class WrappedAsyncSchema<T extends S> {
+/** A class that wraps a Standard Schema and provides asynchronous utility methods. */
+export class WrappedAsyncSchema<T extends StandardSchemaV1> {
   constructor(public readonly schema: T) {}
 
-  validate = (
+  /** @see {@link parse} */
+  async parse(
     input: unknown,
-    options?: S.Options | undefined,
-  ): Promise<Result<S.InferOutput<T>>> => validate(this.schema, input, options);
-
-  parse = (
+    options?: StandardSchemaV1.Options | undefined,
+  ): Promise<StandardSchemaV1.InferOutput<T>> {
+    return await parse(this.schema, input, options);
+  }
+  /** @see {@link safeParse} */
+  async safeParse(
     input: unknown,
-    options?: S.Options | undefined,
-  ): Promise<S.InferOutput<T>> => parse(this.schema, input, options);
-  safeParse = this.validate;
+    options?: StandardSchemaV1.Options | undefined,
+  ): Promise<Result<StandardSchemaV1.InferOutput<T>>> {
+    return await safeParse(this.schema, input, options);
+  }
+  /** @see {@link safeParse} */
+  validate = this.safeParse;
 
-  decode = (
-    input: S.InferInput<T>,
-    options?: S.Options | undefined,
-  ): Promise<S.InferOutput<T>> => decode(this.schema, input, options);
-  safeDecode = (
-    input: S.InferInput<T>,
-    options?: S.Options | undefined,
-  ): Promise<Result<S.InferOutput<T>>> =>
-    safeDecode(this.schema, input, options);
+  /** @see {@link decode} */
+  async decode(
+    input: StandardSchemaV1.InferInput<T>,
+    options?: StandardSchemaV1.Options | undefined,
+  ): Promise<StandardSchemaV1.InferOutput<T>> {
+    return await decode(this.schema, input, options);
+  }
+  /** @see {@link safeDecode} */
+  async safeDecode(
+    input: StandardSchemaV1.InferInput<T>,
+    options?: StandardSchemaV1.Options | undefined,
+  ): Promise<Result<StandardSchemaV1.InferOutput<T>>> {
+    return await safeDecode(this.schema, input, options);
+  }
 }
 
-export const wrap = <T extends S>(schema: T): WrappedAsyncSchema<T> =>
-  new WrappedAsyncSchema(schema);
+/** Wraps a Standard Schema in a class that provides asynchronous utility methods. */
+export function wrap<T extends StandardSchemaV1>(
+  schema: T,
+): WrappedAsyncSchema<T> {
+  return new WrappedAsyncSchema(schema);
+}

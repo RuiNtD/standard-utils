@@ -37,6 +37,7 @@ await ss.validate(Player, data);
 await ss.safeParse(Player, badData); // alias of "validate"
 // { success: false, issues: [ ... ] }
 
+// Piping
 const stringToLength = ss.pipe(
   v.string(),
   z.transform((val) => val.length),
@@ -105,6 +106,18 @@ if (ssSync.is(Player, data)) {
 data; // unknown
 ssSync.assert(Player, data);
 data; // Player
+```
+
+## Parsers and Decoders
+
+```ts
+const getUsername = ssSync.parser(Player); // (input: unknown) => string
+getUsername(data); // "billie"
+
+const getHostname = ssSync.decoder(
+  z.url().transform((url) => new URL(url).hostname),
+); // (input: string) => string
+getHostname("https://jsr.io/@ruintd/standard-utils"); // "jsr.io"
 ```
 
 ## Wrapping Schemas

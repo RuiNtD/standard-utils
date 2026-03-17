@@ -6,28 +6,26 @@
 
 export * from "./common.ts";
 
-export {
-  validate,
-  parse,
-  safeParse,
-  decode,
-  safeDecode,
-  is,
-  assert,
-  wrap,
-  WrappedSyncSchema,
-  pipe,
-  PipedSyncSchema,
-} from "./lib/sync.ts";
+export * from "./lib/sync.ts";
 
 export {
-  validate as validateAsync,
   parse as parseAsync,
   safeParse as safeParseAsync,
+  validate as validateAsync,
+  //
   decode as decodeAsync,
   safeDecode as safeDecodeAsync,
-  wrap as wrapAsync,
-  WrappedAsyncSchema,
+  //
+  parser as parserAsync,
+  safeParser as safeParserAsync,
+  validater as validaterAsync,
+  //
+  decoder as decoderAsync,
+  safeDecoder as safeDecoderAsync,
+  //
   pipe as pipeAsync,
   PipedAsyncSchema,
+  //
+  wrap as wrapAsync,
+  WrappedAsyncSchema,
 } from "./lib/async.ts";

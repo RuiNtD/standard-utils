@@ -2,6 +2,8 @@ import type { StandardSchemaV1, InferInput, InferOutput } from "../types.ts";
 import type { Result } from "../common.ts";
 import { parse, safeParse } from "./parse.ts";
 import { decode, safeDecode } from "./decode.ts";
+import { parser, safeParser } from "./parser.ts";
+import { decoder, safeDecoder } from "./decoder.ts";
 import { pipe, type PipedAsyncSchema } from "./pipe.ts";
 
 /** A class that wraps a Standard Schema and provides asynchronous utility methods. */
@@ -45,6 +47,36 @@ export class WrappedAsyncSchema<
     options?: StandardSchemaV1.Options | undefined,
   ): Promise<Result<Output>> {
     return await safeDecode(this.schema, input, options);
+  }
+
+  /** @see {@link parser} */
+  parser(): (
+    input: unknown,
+    options?: StandardSchemaV1.Options | undefined,
+  ) => Promise<Output> {
+    return parser(this.schema);
+  }
+  /** @see {@link safeParser} */
+  safeParser(): (
+    input: unknown,
+    options?: StandardSchemaV1.Options | undefined,
+  ) => Promise<Result<Output>> {
+    return safeParser(this.schema);
+  }
+
+  /** @see {@link decoder} */
+  decoder(): (
+    input: Input,
+    options?: StandardSchemaV1.Options | undefined,
+  ) => Promise<Output> {
+    return decoder(this.schema);
+  }
+  /** @see {@link safeDecoder} */
+  safeDecoder(): (
+    input: Input,
+    options?: StandardSchemaV1.Options | undefined,
+  ) => Promise<Result<Output>> {
+    return safeDecoder(this.schema);
   }
 
   pipe<Output>(

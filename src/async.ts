@@ -14,6 +14,8 @@ export {
   safeDecode,
   wrap,
   WrappedAsyncSchema,
+  pipe,
+  PipedAsyncSchema,
 } from "./lib/async.ts";
 
 export {
@@ -26,4 +28,6 @@ export {
   assert as assertSync,
   wrap as wrapSync,
   WrappedSyncSchema,
+  pipe as pipeSync,
+  PipedSyncSchema,
 } from "./lib/sync.ts";

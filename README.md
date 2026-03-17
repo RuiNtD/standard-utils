@@ -3,6 +3,8 @@ expanding upon the existing [@standard-schema/utils].
 
 Mainly provides functions that make it easier to use Standard Schema without having to reuse code.
 
+Heavily inspired by [Zod] and [Valibot].
+
 # Usage
 
 ```ts
@@ -15,6 +17,7 @@ import * as ssSync from "@ruintd/standard-utils/sync";
 // by appending Sync to the method names, and vice versa.
 
 import * as z from "zod";
+import * as v from "valibot";
 
 const Player = z.object({
   username: z.string(),
@@ -33,6 +36,11 @@ await ss.validate(Player, data);
 // { success: true, value: { username: "billie", xp: 100 } }
 await ss.safeParse(Player, badData); // alias of "validate"
 // { success: false, issues: [ ... ] }
+
+const stringToLength = ss.pipe(
+  v.string(),
+  z.transform((val) => val.length),
+);
 ```
 
 ## Handling Errors
@@ -40,7 +48,7 @@ await ss.safeParse(Player, badData); // alias of "validate"
 For error handling, we export a `prettifyError` function;
 which can take a `FailureResult` (from validate),
 `Issue[]` (from `FailureResult.issues`), a single `Issue`, or a `SchemaError`;
-and returns a user-friendly error message, similar to Zod's `prettifyError`:
+and returns a user-friendly error message, similar to [Zod]'s `prettifyError`:
 
 ```ts
 try {
@@ -122,3 +130,5 @@ We also export [SchemaStandardV1], as well as
 [SchemaStandardV1]: https://jsr.io/@standard-schema/spec/doc/~/StandardSchemaV1
 [getDotPath]: https://jsr.io/@standard-schema/utils/doc/~/getDotPath
 [SchemaError]: https://jsr.io/@standard-schema/utils/doc/~/SchemaError
+[Zod]: https://zod.dev/
+[Valibot]: https://valibot.dev/

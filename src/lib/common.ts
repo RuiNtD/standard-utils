@@ -1,5 +1,4 @@
-import type { StandardSchemaV1 } from "@standard-schema/spec";
-export type { StandardSchemaV1 };
+import type { StandardSchemaV1 } from "./types.ts";
 
 import { SchemaError, getDotPath } from "@standard-schema/utils";
 export { SchemaError, getDotPath };
